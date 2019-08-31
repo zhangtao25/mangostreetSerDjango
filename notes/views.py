@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_GET,require_POST,require_http_methods
 from django.forms.models import model_to_dict
 import json
+import time
 from .models import Notes
 
 # 可以接收到列表中的规定的请求
@@ -29,7 +30,17 @@ def add_note(request):
     #     是cover，这个是外部浏览笔记的时候的封面，一类是images，这个是笔记详情页的不定数量的图片。
     #     这块你来操作，周六起来搞！
     #     ps：你可以用postman自测
-    return HttpResponse('这里编写添加note接口')
+    title = request.POST['title']
+    desc = request.POST['desc']
+    img_files = request.FILES.getlist('myfiles')
+    for img in img_files:
+        file = open('./static/'+img.name, 'wb')
+        for chunk in img.chunks():
+            file.write(chunk)
+        file.close()
+    print(title,desc)
+    return HttpResponse('OK')
+
 
 # ↓↓↓以下是例子
 # 只能接收get的请求,如果是post请求访问则直接报错,无法接收
@@ -37,10 +48,13 @@ def add_note(request):
 def rgt(request):
     return HttpResponse('GET请求')
 
+
 # 只能接收post的请求,如果是get请求访问则直接报错,无法接收
 @require_POST
 def rpt(request):
     return HttpResponse('POST请求')
+
+
 # 可以接收到列表中的规定的请求
 @require_http_methods(['GET', 'POST'])
 def gpt(request):
