@@ -6,7 +6,9 @@ from django.core import serializers
 import json
 import time
 from .models import Notes
-
+from django.conf import settings
+import os
+import random
 # 可以接收到列表中的规定的请求
 @require_http_methods(['GET', 'POST'])
 def index(request):
@@ -40,20 +42,38 @@ def add_note(request):
     #     是cover，这个是外部浏览笔记的时候的封面，一类是images，这个是笔记详情页的不定数量的图片。
     #     这块你来操作，周六起来搞！
     #     ps：你可以用postman自测
-    title = request.POST['title']
-    desc = request.POST['desc']
-    img_files = request.FILES.getlist('myfiles')
-    for img in img_files:
-        file = open('./static/'+img.name, 'wb')
-        for chunk in img.chunks():
-            file.write(chunk)
-        file.close()
 
-    notes = Notes()
-    notes.id = 'dfsdfsdsdfkjn'
-    notes.title = title
-    notes.desc = desc
-    notes.save()
+    img_files = request.FILES.getlist('myfiles')
+    list1 = []
+    str = '1234567890qwertyuiopasdfghjklzxcvbnm'
+    userid_str = ''
+    id_str = ''
+    for i in range(0, 24):
+        userid_str += str[random.randrange(0, len(str))]
+    for i in range(0, 24):
+        id_str += str[random.randrange(0, len(str))]
+    os.mkdir('./static/notes/' + id_str)
+    for img in img_files:
+        list1.append(img.name)
+        imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/',img.name)
+        with open(imgfilepath,'wb') as imgfile:
+            for info in img.chunks():
+                imgfile.write(info)
+    images=""
+    j=1
+    for i in list1:
+        images += i
+        j += 1
+        if j <=len(list1):
+            images += ","
+    note1=Notes()
+    note1.images=images
+    note1.cover=list1[-1]
+    note1.title = request.POST.get('title')
+    note1.desc = request.POST.get('desc')
+    note1.id=id_str
+    note1.user_id=userid_str
+    note1.save()
     return HttpResponse('OK')
 
 
