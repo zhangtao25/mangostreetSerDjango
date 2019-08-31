@@ -1,7 +1,8 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.views.decorators.http import require_GET,require_POST,require_http_methods
 from django.forms.models import model_to_dict
+from django.core import serializers
 import json
 import time
 from .models import Notes
@@ -13,6 +14,15 @@ def index(request):
         return add_note(request)
     elif request.method == 'GET':
         return get_all_notes(request)
+
+def get_note_by_id(request):
+    id = request.GET['id']
+    queryset = Notes.objects.filter(id=id)
+    data = []
+    for i in queryset:
+        data.append(model_to_dict(i))
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 # methods:GET
 def get_all_notes(request):
@@ -38,7 +48,12 @@ def add_note(request):
         for chunk in img.chunks():
             file.write(chunk)
         file.close()
-    print(title,desc)
+
+    notes = Notes()
+    notes.id = 'dfsdfsdsdfkjn'
+    notes.title = title
+    notes.desc = desc
+    notes.save()
     return HttpResponse('OK')
 
 

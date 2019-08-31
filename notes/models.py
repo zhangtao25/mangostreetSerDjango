@@ -1,7 +1,7 @@
 from django.db import models
 
 class Notes(models.Model):
-    # id = models.CharField(max_length=50)
+    id = models.CharField(max_length=50,primary_key=True)
     title = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
     desc = models.CharField(max_length=50)
