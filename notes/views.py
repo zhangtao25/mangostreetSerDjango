@@ -53,12 +53,20 @@ def add_note(request):
     for i in range(0, 24):
         id_str += str[random.randrange(0, len(str))]
     os.mkdir('./static/notes/' + id_str)
+    os.mkdir('./static/notes/' + id_str + '/cover')
+    os.mkdir('./static/notes/' + id_str + '/images')
     for img in img_files:
         list1.append(img.name)
-        imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/',img.name)
+        imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/images',img.name)
         with open(imgfilepath,'wb') as imgfile:
             for info in img.chunks():
                 imgfile.write(info)
+
+    list1.append(img_files[0].name)
+    imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/cover',img_files[0].name)
+    with open(imgfilepath,'wb') as imgfile:
+        for info in img.chunks():
+            imgfile.write(info)
     images=""
     j=1
     for i in list1:
