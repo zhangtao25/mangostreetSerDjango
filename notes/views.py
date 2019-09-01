@@ -1,33 +1,29 @@
 # Create your views here.
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.http import require_GET,require_POST,require_http_methods
 from django.forms.models import model_to_dict
 import json
 from .models import Notes
 import os,threading
 import random
-from PIL import Image
 import tinify
 
 
 # 可以接收到列表中的规定的请求
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['POST'])
 def index(request):
-    if request.method == 'POST':
-        return add_note(request)
-    elif request.method == 'GET':
-        return get_all_notes(request)
+    return add_note(request)
 
-def get_note_by_id(request):
-    id = request.GET['id']
+
+def get_by_id(request,id):
     queryset = Notes.objects.filter(id=id)
     data = []
     for i in queryset:
         data.append(model_to_dict(i))
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-# methods:GET
-def get_all_notes(request):
+
+def get_all(request):
     queryset = Notes.objects.filter()
     data = []
     for i in queryset:
