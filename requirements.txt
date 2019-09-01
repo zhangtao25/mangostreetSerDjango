@@ -1,3 +1,5 @@
 django
 mysqlclient
 django-cors-headers
+tinify
+pillow

@@ -1,24 +1,21 @@
 # Create your views here.
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.http import require_GET,require_POST,require_http_methods
 from django.forms.models import model_to_dict
-from django.core import serializers
 import json
-import time
 from .models import Notes
-from django.conf import settings
-import os
+import os,threading
 import random
-# 可以接收到列表中的规定的请求
-@require_http_methods(['GET', 'POST'])
-def index(request):
-    if request.method == 'POST':
-        return add_note(request)
-    elif request.method == 'GET':
-        return get_all_notes(request)
+import tinify
 
-def get_note_by_id(request):
-    id = request.GET['id']
+
+# 可以接收到列表中的规定的请求
+@require_http_methods(['POST'])
+def index(request):
+    return add_note(request)
+
+
+def get_by_id(request,id):
     queryset = Notes.objects.filter(id=id)
     data = []
     for i in queryset:
@@ -26,8 +23,7 @@ def get_note_by_id(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-# methods:GET
-def get_all_notes(request):
+def get_all(request):
     queryset = Notes.objects.filter()
     data = []
     for i in queryset:
@@ -35,6 +31,11 @@ def get_all_notes(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+tinify.key = "38Dw8ftlF8N1Scl8ZWbBQ7bXSYHy7GcQ"
+    # 这里就是通过tingPng压缩图片的核心代码
+def compress_core(file, outputFile):
+    source = tinify.from_file(file)  # 压缩指定文件
+    source.to_file(outputFile)
 # methods:POST
 def add_note(request):
     # for代军：
@@ -44,6 +45,7 @@ def add_note(request):
     #     ps：你可以用postman自测
 
     img_files = request.FILES.getlist('myfiles')
+
     list1 = []
     str = '1234567890qwertyuiopasdfghjklzxcvbnm'
     userid_str = ''
@@ -56,17 +58,28 @@ def add_note(request):
     os.mkdir('./static/notes/' + id_str + '/cover')
     os.mkdir('./static/notes/' + id_str + '/images')
     for img in img_files:
+
         list1.append(img.name)
         imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/images',img.name)
         with open(imgfilepath,'wb') as imgfile:
             for info in img.chunks():
                 imgfile.write(info)
+                t1 = threading.Thread(target=compress_core,args=(imgfilepath,imgfilepath))
+                t1.start()
 
-    list1.append(img_files[0].name)
-    imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/cover',img_files[0].name)
+
+
+    # list1.append(img_files[0].name)
+    imgfilepath = os.path.join('./static/notes'+'/'+id_str+'/cover',img_files[-1].name)
     with open(imgfilepath,'wb') as imgfile:
-        for info in img.chunks():
+        for info in img_files[-1].chunks():
             imgfile.write(info)
+            # image = Image.open(imgfilepath)
+            # w, h =image.size
+            # dImg=image.resize((int(w/5),int(h/5)),Image.ANTIALIAS)
+            # dImg.save(imgfilepath)
+            t2 = threading.Thread(target=compress_core, args=(imgfilepath, imgfilepath))
+            t2.start()
     images=""
     j=1
     for i in list1:
