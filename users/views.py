@@ -11,6 +11,7 @@ import threading
 # 获取验证码
 @require_http_methods(['GET'])
 def vcode(request):
+    print(request.GET)
     user_account = request.GET.get('user_account')
     check_results = check_user_account_is_exists(user_account)
     if len(check_results) == 0:
@@ -53,9 +54,10 @@ def check_user_account_is_exists(user_account):
 # 注册
 @require_http_methods(['POST'])
 def reg(request):
-    user_account = request.POST['user_account']
-    user_password = request.POST['user_password']
-    vcode = request.POST['vcode']
+    user_account = request.POST.get('user_account')
+    user_password = ''
+    vcode = request.POST.get('vcode')
+    print(user_account,vcode)
     # 检验有没有匹配的
     user = User.objects.filter(user_account=user_account, vcode=vcode)
     length = len(user)
@@ -83,9 +85,10 @@ def reg(request):
 
 @require_http_methods(['POST'])
 def login(request):
-    user_account = request.POST['user_account']
-    user_password = request.POST['user_password']
+    user_account = request.POST.get('user_account')
+    user_password = request.POST.get('user_password')
     # 检验有没有匹配的
+    print(user_account,user_password)
     user = User.objects.filter(user_account=user_account, user_password=user_password)
     length = len(user)
     if length == 0:
