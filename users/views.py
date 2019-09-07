@@ -78,7 +78,7 @@ def reg(request):
             'result': True,
             'errorCode': None,
             'errorMessage': None,
-            'response': '激活成功'
+            'response': '账号注册成功'
         }
         return HttpResponse(json.dumps(res), content_type='application/json')
 

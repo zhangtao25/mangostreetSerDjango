@@ -24,6 +24,7 @@ def get_by_id(request,id):
 
 
 def get_all(request):
+    print(request.META.get("HTTP_AUTHORIZATION"))
     queryset = Notes.objects.filter()
     data = []
     for i in queryset:
@@ -96,22 +97,3 @@ def add_note(request):
     note1.user_id=userid_str
     note1.save()
     return HttpResponse('OK')
-
-
-# ↓↓↓以下是例子
-# 只能接收get的请求,如果是post请求访问则直接报错,无法接收
-@require_GET
-def rgt(request):
-    return HttpResponse('GET请求')
-
-
-# 只能接收post的请求,如果是get请求访问则直接报错,无法接收
-@require_POST
-def rpt(request):
-    return HttpResponse('POST请求')
-
-
-# 可以接收到列表中的规定的请求
-@require_http_methods(['GET', 'POST'])
-def gpt(request):
-    return HttpResponse('收到')
