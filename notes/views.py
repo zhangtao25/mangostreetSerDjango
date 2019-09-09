@@ -24,20 +24,29 @@ def get_by_id(request,id):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+def check_token_decorator(decorator_arg):
+    def _check_token(func):
+        def __check_token(request, *args, **kwargs):
+            print(request, args, kwargs,decorator_arg)
+            token = request.META.get("HTTP_AUTHORIZATION")
+            check_token_res = check_token(token)
+            if len(check_token_res) == 0:
+                res = {
+                    'result': False,
+                    'errorCode': 8888,
+                    'errorMessage': 'token校验错误',
+                    'response': {}
+                }
+                response = HttpResponse()
+                response.content = json.dumps(res)
+                response.status_code = 403
+                return response
+            return func(request, *args, **kwargs)
+        return __check_token
+    return _check_token
+
+@check_token_decorator('aaa')
 def get_all(request):
-    token = request.META.get("HTTP_AUTHORIZATION")
-    check_token_res = check_token(token)
-    if len(check_token_res) == 0:
-        res = {
-            'result': False,
-            'errorCode': 8888,
-            'errorMessage': 'token校验错误',
-            'response': {}
-        }
-        response = HttpResponse()
-        response.content = json.dumps(res)
-        response.status_code = 403
-        return response
     queryset = Notes.objects.filter()
     data = []
     for i in queryset:
@@ -109,3 +118,5 @@ def add_note(request):
 def check_token(token):
     user = User.objects.filter(token=token)
     return user
+
+
