@@ -1,13 +1,13 @@
 # Create your views here.
 from django.http import HttpResponse
-from django.views.decorators.http import require_GET,require_POST,require_http_methods
+from django.views.decorators.http import require_http_methods
 from django.forms.models import model_to_dict
 import json
 from .models import Notes
 import os,threading
 import random
 import tinify
-from users.models import User
+from apps.users.models import User
 
 
 # 可以接收到列表中的规定的请求
