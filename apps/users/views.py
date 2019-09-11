@@ -7,6 +7,28 @@ from .models import *
 from time import sleep
 import threading
 
+# 装饰器校验token，刚学的ovo
+def check_token_decorator(decorator_arg):
+    def _check_token(func):
+        def __check_token(request, *args, **kwargs):
+            print(request, args, kwargs,decorator_arg)
+            token = request.META.get("HTTP_AUTHORIZATION")
+            check_token_res = check_token(token)
+            if len(check_token_res) == 0:
+                res = {
+                    'result': False,
+                    'errorCode': 8888,
+                    'errorMessage': 'token校验错误',
+                    'response': {}
+                }
+                response = HttpResponse()
+                response.content = json.dumps(res)
+                response.status_code = 403
+                return response
+            return func(request, *args, **kwargs)
+        return __check_token
+    return _check_token
+
 
 # 获取验证码
 @require_http_methods(['GET'])
@@ -113,6 +135,9 @@ def login(request):
         }
         return HttpResponse(json.dumps(res), content_type='application/json')
 
+# 以上不需要鉴权
+
+
 def info(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     check_token_res = check_token(token)
@@ -133,6 +158,33 @@ def info(request):
         'errorCode': None,
         'errorMessage': None,
         'response': model_to_dict(check_token_res[0])
+    }
+    return HttpResponse(json.dumps(res), content_type='application/json')
+
+
+@check_token_decorator('test')
+def updateinfo(request):
+    print(request.POST.get('user_nickname'))
+    token = request.META.get("HTTP_AUTHORIZATION")
+
+    # 注意判断，萌新入坑，还不了解高端写法ovo
+    if request.POST.get('user_nickname'):
+        user_nickname = request.POST.get('user_nickname')
+        User.objects.filter(token=token).update(user_nickname=user_nickname)
+    elif request.POST.get('user_sex'):
+        user_sex = request.POST.get('user_sex')
+        User.objects.filter(token=token).update(user_sex=user_sex)
+    elif request.POST.get('user_birthday'):
+        user_birthday = request.POST.get('user_birthday')
+        User.objects.filter(token=token).update(user_birthday=user_birthday)
+
+
+
+    res = {
+        'result': True,
+        'errorCode': None,
+        'errorMessage': None,
+        'response': {}
     }
     return HttpResponse(json.dumps(res), content_type='application/json')
 

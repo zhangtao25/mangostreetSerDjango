@@ -9,21 +9,12 @@ import random
 import tinify
 from apps.users.models import User
 
+# 查询token
+def check_token(token):
+    user = User.objects.filter(token=token)
+    return user
 
-# 可以接收到列表中的规定的请求
-@require_http_methods(['POST'])
-def index(request):
-    return add_note(request)
-
-
-def get_by_id(request,id):
-    queryset = Notes.objects.filter(id=id)
-    data = []
-    for i in queryset:
-        data.append(model_to_dict(i))
-    return HttpResponse(json.dumps(data), content_type='application/json')
-
-
+# 装饰器校验token，刚学的ovo
 def check_token_decorator(decorator_arg):
     def _check_token(func):
         def __check_token(request, *args, **kwargs):
@@ -45,7 +36,25 @@ def check_token_decorator(decorator_arg):
         return __check_token
     return _check_token
 
-@check_token_decorator('aaa')
+
+# 可以接收到列表中的规定的请求
+@require_http_methods(['POST'])
+@check_token_decorator('test')
+def index(request):
+    return add_note(request)
+
+@require_http_methods(['GET'])
+@check_token_decorator('test')
+def get_by_id(request,id):
+    queryset = Notes.objects.filter(id=id)
+    data = []
+    for i in queryset:
+        data.append(model_to_dict(i))
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@require_http_methods(['GET'])
+@check_token_decorator('test')
 def get_all(request):
     queryset = Notes.objects.filter()
     data = []
@@ -60,6 +69,9 @@ def compress_core(file, outputFile):
     source = tinify.from_file(file)  # 压缩指定文件
     source.to_file(outputFile)
 
+
+@require_http_methods(['POST'])
+@check_token_decorator('test')
 def add_note(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     check_token_res = check_token(token)
@@ -115,8 +127,6 @@ def add_note(request):
     note1.save()
     return HttpResponse('OK')
 
-def check_token(token):
-    user = User.objects.filter(token=token)
-    return user
+
 
 
