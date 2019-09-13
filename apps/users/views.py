@@ -97,6 +97,7 @@ def reg(request):
         _user = User.objects.get(user_account=user_account)
         _user.user_isactive = True
         _user.user_password = user_password
+        _user.user_nickname = user_nickname
         _user.save()
         print("注册成功")
         os.mkdir('./static/users/' + _user.user_account)
@@ -173,8 +174,8 @@ def info(request):
 
 @check_token_decorator('test')
 def updateinfo(request):
-    print(request.POST.get('user_nickname'))
     token = request.META.get("HTTP_AUTHORIZATION")
+
 
     # 注意判断，萌新入坑，还不了解高端写法ovo
     if request.POST.get('user_nickname'):
@@ -186,6 +187,20 @@ def updateinfo(request):
     elif request.POST.get('user_birthday'):
         user_birthday = request.POST.get('user_birthday')
         User.objects.filter(token=token).update(user_birthday=user_birthday)
+    elif request.FILES.getlist('user_img'):
+        user_img = request.FILES.getlist('user_img')
+        print(user_img)
+        _user = User.objects.get(token=token)
+        dirPath = './static/users/'+_user.user_account+'/'
+        if (os.path.exists(dirPath + "default.jpg")):
+            os.remove(dirPath + "default.jpg")
+            print ('移除后test 目录下有文件：%s' % os.listdir(dirPath))
+        else:
+            print("要删除的文件不存在！")
+        imgfilepath = dirPath + "default.jpg"
+        with open(imgfilepath, 'wb') as imgfile:
+            for info in user_img[0].chunks():
+                imgfile.write(info)
 
 
 
