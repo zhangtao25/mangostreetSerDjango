@@ -1,5 +1,5 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 import time, random, os, json
 from django.forms.models import model_to_dict
@@ -78,32 +78,41 @@ def check_user_account_is_exists(user_account):
 @require_http_methods(['POST'])
 def reg(request):
     user_account = request.POST.get('user_account')
-    user_password = ''
+    user_password =request.POST.get('user_password')
+    user_nickname =request.POST.get('user_nickname')
     vcode = request.POST.get('vcode')
     print(user_account,vcode)
     # 检验有没有匹配的
     user = User.objects.filter(user_account=user_account, vcode=vcode)
-    length = len(user)
-    if length == 0:
+    if not user.exists():
         res = {
             'result': False,
             'errorCode': 2222,
             'errorMessage': '验证码错误',
             'response': {}
         }
-        return HttpResponse(json.dumps(res), content_type='application/json')
+        # return HttpResponse(json.dumps(res), content_type='application/json')
+        return JsonResponse(data=res)
     else:
         _user = User.objects.get(user_account=user_account)
         _user.user_isactive = True
         _user.user_password = user_password
         _user.save()
+        print("注册成功")
+        os.mkdir('./static/users/' + _user.user_account)
+        with open('./static/img/default.jpg','rb') as fr:
+            context=fr.read()
+        topath = './static/users/'+_user.user_account+'/'+'default.jpg'
+        with open(topath,'wb') as fr:
+            fr.write(context)
         res = {
             'result': True,
             'errorCode': None,
             'errorMessage': None,
             'response': '账号注册成功'
         }
-        return HttpResponse(json.dumps(res), content_type='application/json')
+        # return HttpResponse(json.dumps(res), content_type='application/json')
+        return JsonResponse(data=res)
 
 
 @require_http_methods(['POST'])
