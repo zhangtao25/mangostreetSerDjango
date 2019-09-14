@@ -186,6 +186,7 @@ def updateinfo(request):
     elif request.POST.get('user_birthday'):
         user_birthday = request.POST.get('user_birthday')
         User.objects.filter(token=token).update(user_birthday=user_birthday)
+        print(1111)
 
 
 
