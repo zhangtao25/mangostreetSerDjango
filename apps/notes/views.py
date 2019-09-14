@@ -124,6 +124,8 @@ def add_note(request):
     note1.desc = request.POST.get('desc')
     note1.id=id_str
     note1.user_id=model_to_dict(check_token_res[0])['user_id']
+    user = User.objects.get(user_id=note1.user_id)
+    note1.n_user = user
     note1.save()
     return HttpResponse('OK')
 
