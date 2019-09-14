@@ -48,8 +48,14 @@ def index(request):
 def get_by_id(request,id):
     queryset = Notes.objects.filter(id=id)
     data = []
+    res = []
     for i in queryset:
-        data.append(model_to_dict(i))
+        user_nickname = i.n_user.user_nickname
+        user_account = i.n_user.user_account
+        dict1 = model_to_dict(i)
+        dict1["user_nickname"]=user_nickname
+        dict1["user_account"]=user_account
+        data.append(dict1)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
