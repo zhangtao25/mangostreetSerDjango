@@ -171,9 +171,12 @@ def info(request):
     }
     return HttpResponse(json.dumps(res), content_type='application/json')
 
+
 @check_token_decorator('test')
 def updateinfo(request):
     token = request.META.get("HTTP_AUTHORIZATION")
+
+
     # 注意判断，萌新入坑，还不了解高端写法ovo
     if request.POST.get('user_nickname'):
         user_nickname = request.POST.get('user_nickname')
@@ -198,6 +201,9 @@ def updateinfo(request):
         with open(imgfilepath, 'wb') as imgfile:
             for info in user_img[0].chunks():
                 imgfile.write(info)
+
+
+
     res = {
         'result': True,
         'errorCode': None,

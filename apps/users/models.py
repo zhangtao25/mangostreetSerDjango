@@ -4,7 +4,7 @@ from django.db import models
 class User(models.Model):
     # 用户账号，要唯一
     user_id = models.CharField(max_length=20)
-    user_sex = models.IntegerField(max_length=20,default=1)
+    user_sex = models.IntegerField(max_length=20)
     user_account=models.CharField(primary_key=True,max_length=50,unique=True)
     # 密码
     user_password=models.CharField(max_length=20)
