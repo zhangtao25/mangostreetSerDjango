@@ -12,7 +12,7 @@ class Notes(models.Model):
     cover = models.CharField(max_length=50,)
     user_id = models.CharField(max_length=50)
     collects = models.IntegerField(default=0)
-    images = models.CharField(max_length=50)
+    images = models.CharField(max_length=255)
     n_user = models.ForeignKey(User,on_delete=models.CASCADE)
     # is_delete=models.BooleanField(max_length=2,default=False)
     class Meta:

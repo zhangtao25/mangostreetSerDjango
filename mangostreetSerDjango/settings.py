@@ -41,11 +41,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.follows',
     'apps.likes',
-    'apps.collects',
-    'apps.comments',
-    'apps.likecomments',
-    'apps.replys',
-    'apps.likereplys'
+    'apps.collects'
 ]
 
 MIDDLEWARE = [
