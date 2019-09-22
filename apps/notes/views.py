@@ -61,9 +61,11 @@ def get_all(request):
     for i in queryset:
         user_nickname = i.n_user.user_nickname
         user_account = i.n_user.user_account
+        user_img = i.n_user.user_img
         dict1 = model_to_dict(i)
         dict1["user_nickname"]=user_nickname
         dict1["user_account"]=user_account
+        dict1["user_img"] = user_img
         data.append(dict1)
     return HttpResponse(json.dumps(data), content_type='application/json')
 

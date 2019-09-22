@@ -189,15 +189,16 @@ def updateinfo(request):
         User.objects.filter(token=token).update(user_birthday=user_birthday)
     elif request.FILES.getlist('user_img'):
         user_img = request.FILES.getlist('user_img')
-        print(user_img)
+        _user_img = 'default' + str(random.randrange(100000000, 999999999)) + '.jpg'
+        User.objects.filter(token=token).update(user_img=_user_img)
         _user = User.objects.get(token=token)
         dirPath = './static/users/'+_user.user_account+'/'
-        if (os.path.exists(dirPath + "default.jpg")):
-            os.remove(dirPath + "default.jpg")
+        if (os.path.exists(dirPath + _user_img)):
+            # os.remove(dirPath + "default.jpg")
             print ('移除后test 目录下有文件：%s' % os.listdir(dirPath))
         else:
             print("要删除的文件不存在！")
-        imgfilepath = dirPath + "default.jpg"
+        imgfilepath = dirPath + _user_img
         with open(imgfilepath, 'wb') as imgfile:
             for info in user_img[0].chunks():
                 imgfile.write(info)
