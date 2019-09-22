@@ -7,7 +7,7 @@ class Notes(models.Model):
     id = models.CharField(max_length=50,primary_key=True)
     title = models.CharField(max_length=50)
     type = models.CharField(max_length=50,default="normal")
-    desc = models.CharField(max_length=50)
+    desc = models.CharField(max_length=255)
     likes = models.IntegerField(default=0)
     cover = models.CharField(max_length=50,)
     user_id = models.CharField(max_length=50)
