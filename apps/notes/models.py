@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from db.base_model import BaseModel
 from apps.users.models import *
 
+
 class Notes(models.Model):
     id = models.CharField(max_length=50,primary_key=True)
     title = models.CharField(max_length=50)
@@ -18,3 +19,14 @@ class Notes(models.Model):
     class Meta:
         db_table = "notes"
 
+
+class Likes(models.Model):
+    like_id = models.CharField(max_length=20,primary_key=True)
+    user_id = models.CharField(max_length=20)
+    note_id = models.CharField(max_length=20)
+
+
+class Collects(models.Model):
+    collect_id = models.CharField(max_length=20,primary_key=True)
+    user_id = models.CharField(max_length=20)
+    note_id = models.CharField(max_length=20)

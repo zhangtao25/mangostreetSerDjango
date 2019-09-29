@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class User(models.Model):
     # 用户账号，要唯一
@@ -19,3 +20,9 @@ class User(models.Model):
     vcode=models.CharField(max_length=10)
     class Meta():
         db_table = "users"
+
+
+class Follows(models.Model):
+    follow_id = models.CharField(max_length=20,primary_key=True)
+    user_id = models.CharField(max_length=20)
+    follow_user_id = models.CharField(max_length=20)

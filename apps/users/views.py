@@ -7,6 +7,7 @@ from .models import *
 from time import sleep
 import threading
 
+
 # 装饰器校验token，刚学的ovo
 def check_token_decorator(decorator_arg):
     def _check_token(func):
@@ -147,7 +148,6 @@ def login(request):
 
 # 以上不需要鉴权
 
-
 def info(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     check_token_res = check_token(token)
@@ -175,8 +175,6 @@ def info(request):
 @check_token_decorator('test')
 def updateinfo(request):
     token = request.META.get("HTTP_AUTHORIZATION")
-
-
     # 注意判断，萌新入坑，还不了解高端写法ovo
     if request.POST.get('user_nickname'):
         user_nickname = request.POST.get('user_nickname')
@@ -202,9 +200,6 @@ def updateinfo(request):
         with open(imgfilepath, 'wb') as imgfile:
             for info in user_img[0].chunks():
                 imgfile.write(info)
-
-
-
     res = {
         'result': True,
         'errorCode': None,
@@ -213,10 +208,12 @@ def updateinfo(request):
     }
     return HttpResponse(json.dumps(res), content_type='application/json')
 
+
 def delete_expired_users(user_account):
     # 设置十分钟有效
     sleep(60 * 10)
     User.objects.filter(user_account=user_account, user_isactive=0).delete()
+
 
 def inspection_repeatability():
     user_id = str(random.randrange(100000000, 999999999))
@@ -224,6 +221,7 @@ def inspection_repeatability():
     if len(_user) !=0:
         inspection_repeatability()
     return user_id
+
 
 def check_token(token):
     user = User.objects.filter(token=token)
