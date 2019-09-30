@@ -7,11 +7,11 @@ from .models import Notes
 import os,threading
 import random
 import tinify
-from apps.users.models import User
+from apps.users.models import Users
 
 # 查询token
 def check_token(token):
-    user = User.objects.filter(token=token)
+    user = Users.objects.filter(token=token)
     return user
 
 # 装饰器校验token，刚学的ovo
@@ -138,7 +138,7 @@ def add_note(request):
     note1.desc = request.POST.get('desc')
     note1.id=id_str
     note1.user_id=model_to_dict(check_token_res[0])['user_id']
-    user = User.objects.get(user_id=note1.user_id)
+    user = Users.objects.get(user_id=note1.user_id)
     note1.n_user = user
     note1.save()
     return HttpResponse('OK')

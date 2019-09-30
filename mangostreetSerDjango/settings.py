@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'apps.notes',
     'apps.users',
+    'snippets.apps.SnippetsConfig'
 ]
 
 MIDDLEWARE = [
@@ -79,7 +81,7 @@ WSGI_APPLICATION = 'mangostreetSerDjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mangguojie',
+        'NAME': 'mangostreet',
         'USER': 'root',
         'PASSWORD': 'wjyy26303',
         'HOST': '114.55.145.3',
