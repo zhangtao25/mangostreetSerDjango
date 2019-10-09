@@ -1,0 +1,6 @@
+django
+mysqlclient
+django-cors-headers
+djangorestframework
+django-simpleui
+Pillow
