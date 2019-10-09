@@ -8,6 +8,7 @@
 *.sln
 *.sw?
 
+avatars/
 venv/
 static/
 **/__pycache__/
