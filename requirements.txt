@@ -1,8 +1,0 @@
-django
-mysqlclient
-django-cors-headers
-tinify
-djangorestframework
-markdown
-django-filter
-pygments
