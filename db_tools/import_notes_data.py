@@ -14,15 +14,27 @@ django.setup()
 # 这行代码必须在初始化django之后
 from notes.models import Note
 
-# from db_tools.data.note_data import row_data
+import pymongo
 
-row_data = [
+myclient = pymongo.MongoClient("mongodb://192.168.0.104:27017/")
+mydb = myclient["xiaohongshu"]
+mycol = mydb["notes2"]
+myquery = {}
+mydoc = mycol.find(myquery)
 
-]
-
-for lev1_cat in row_data:
-    lev1_intance = Note()
-    lev1_intance.code = lev1_cat["code"]
-    lev1_intance.name = lev1_cat["name"]
-    lev1_intance.category_type = 1
-    lev1_intance.save()
+for x in mydoc:
+    if x['NoteView']['noteInfo']['type'] == 'normal':
+        note = Note()
+        note.id = x['NoteView']['noteInfo']['id']
+        note.title = x['NoteView']['noteInfo']['title']
+        note.type = x['NoteView']['noteInfo']['type']
+        note.desc = x['NoteView']['noteInfo']['desc']
+        note.likes = x['NoteView']['noteInfo']['likes']
+        note.cover = x['NoteView']['noteInfo']['cover']['original'].replace('http://ci.xiaohongshu.com/','')
+        note.collects = x['NoteView']['noteInfo']['collects']
+        imageStr = ''
+        for image in x['NoteView']['noteInfo']['images']:
+            imageStr += (image['original'].replace('http://ci.xiaohongshu.com/','') + ',')
+        note.images = imageStr
+        note.user_id = x['NoteView']['noteInfo']['user']['id']
+        note.save()
