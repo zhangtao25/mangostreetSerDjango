@@ -87,6 +87,7 @@ DATABASES = {
         'PASSWORD': 'wjyy26303',
         'HOST': '114.55.145.3',
         'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'}, #支持emoji
     }
 }
 
