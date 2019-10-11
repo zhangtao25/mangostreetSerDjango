@@ -23,5 +23,6 @@ urlpatterns = [
     # -------------------------------
     path('', include('notes.urls')),
     path('', include('users.urls')),
+    path('testapi/',include('testapi.urls')),
     url(r'^api-auth/', include('rest_framework.urls'))
 ]
