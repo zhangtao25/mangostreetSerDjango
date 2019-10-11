@@ -3,7 +3,7 @@ from users.models import User
 from users.serializers import UserSerializer
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     """
     这个视图集自动提供“列表”和“详细”操作。
     """

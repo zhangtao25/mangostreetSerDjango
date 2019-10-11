@@ -14,3 +14,9 @@ class Note(models.Model):
     images = models.ImageField(max_length=500,upload_to='avatars/')
     class Meta:
         ordering = ['created']
+
+class Follow(models.Model):
+    follow_id = models.CharField(max_length=50, primary_key=True)
+    user_id = models.CharField(max_length=50)
+    follow_user_id = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
