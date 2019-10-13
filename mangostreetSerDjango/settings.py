@@ -25,7 +25,7 @@ SECRET_KEY = 'z+k@xvjgh54%=+3=)m86pwf*!)q2bbxqtqwct&yug-z8pops57'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,7 +90,10 @@ DATABASES = {
         'PASSWORD': 'wjyy26303',
         'HOST': '114.55.145.3',
         'PORT': '3306',
-        'OPTIONS': {'charset': 'utf8mb4'}, #支持emoji
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            "init_command":"SET foreign_key_checks = 0;",
+        }
     }
 }
 

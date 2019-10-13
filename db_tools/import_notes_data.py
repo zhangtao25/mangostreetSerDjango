@@ -37,7 +37,6 @@ for x in mydoc:
             imageStr += (image['original'].replace('http://ci.xiaohongshu.com/','') + ',')
         note.images = imageStr
         note.user_id = x['NoteView']['noteInfo']['user']['id']
-
         # 检查msyql数据库是否含有改笔记
         checkresults = Note.objects.filter(id=note.id)
         if len(checkresults) == 0:

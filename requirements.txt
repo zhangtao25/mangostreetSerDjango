@@ -4,3 +4,4 @@ django-cors-headers
 djangorestframework
 django-simpleui
 Pillow
+pymongo
