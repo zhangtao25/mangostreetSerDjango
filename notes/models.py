@@ -1,19 +1,6 @@
 from django.db import models
 from users.models import User
-
-
-class Like(models.Model):
-    like_id = models.CharField(max_length=50, primary_key=True)
-    user_id = models.CharField(max_length=50)
-    note_id = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
-
-
-class Collect(models.Model):
-    collect_id = models.CharField(max_length=50, primary_key=True)
-    user_id = models.CharField(max_length=50)
-    note_id = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
+# from notes.models import Note
 
 
 class Note(models.Model):
@@ -29,4 +16,20 @@ class Note(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     class Meta:
         ordering = ['created']
+
+
+class Collect(models.Model):
+    collect_id = models.CharField(max_length=50, primary_key=True)
+    # user_id = models.CharField(max_length=50)
+    # note_id = models.CharField(max_length=50)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    note = models.ForeignKey(Note,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class Like(models.Model):
+    like_id = models.CharField(max_length=50, primary_key=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    note = models.ForeignKey(Note,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
