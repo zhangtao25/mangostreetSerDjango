@@ -1,4 +1,19 @@
 from django.db import models
+from users.models import User
+
+
+class Like(models.Model):
+    like_id = models.CharField(max_length=50, primary_key=True)
+    user_id = models.CharField(max_length=50)
+    note_id = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class Collect(models.Model):
+    collect_id = models.CharField(max_length=50, primary_key=True)
+    user_id = models.CharField(max_length=50)
+    note_id = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Note(models.Model):
@@ -9,14 +24,9 @@ class Note(models.Model):
     desc = models.TextField()
     likes = models.IntegerField(default=0)
     cover = models.ImageField(upload_to='avatars/')
-    user_id = models.CharField(max_length=50)
     collects = models.IntegerField(default=0)
     images = models.ImageField(max_length=500,upload_to='avatars/')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     class Meta:
         ordering = ['created']
 
-class Follow(models.Model):
-    follow_id = models.CharField(max_length=50, primary_key=True)
-    user_id = models.CharField(max_length=50)
-    follow_user_id = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
