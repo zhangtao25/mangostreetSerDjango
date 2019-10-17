@@ -18,8 +18,21 @@ class LikeViewSet(viewsets.ModelViewSet):
     """
     这个视图集自动提供“列表”和“详细”操作。
     """
-    queryset = Like.objects.all()
+    # queryset = Like.objects.all()
     serializer_class = LikeSerializer
+
+
+    def get_queryset(self):
+        return Like.objects.all()
+
+    def perform_create(self, serializer):
+        like = serializer.save()
+        like.save()
+        print(like.note_id)
+        like_list = Like.objects.filter(note_id=like.note_id)
+        note = Note.objects.get(id=like.note_id)
+        note.likes = len(like_list)
+        note.save()
 
 
 class CollectViewSet(viewsets.ModelViewSet):
