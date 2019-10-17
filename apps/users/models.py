@@ -1,5 +1,5 @@
 from django.db import models
-
+# from notes import Note
 
 class User(models.Model):
     created = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,5 @@
 from django.db import models
 from users.models import User
-# from notes.models import Note
 
 
 class Note(models.Model):
