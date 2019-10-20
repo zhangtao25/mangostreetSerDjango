@@ -3,7 +3,7 @@ from users.models import User
 
 
 class Note(models.Model):
-    id = models.CharField(max_length=50, primary_key=True)
+    note_id = models.CharField(max_length=50, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     type = models.CharField(choices=[('normal','normal'),('video','video')], default='normal', max_length=10)
@@ -19,8 +19,6 @@ class Note(models.Model):
 
 class Collect(models.Model):
     collect_id = models.CharField(max_length=50, primary_key=True)
-    # user_id = models.CharField(max_length=50)
-    # note_id = models.CharField(max_length=50)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     note = models.ForeignKey(Note,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

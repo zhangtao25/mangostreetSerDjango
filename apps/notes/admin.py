@@ -5,7 +5,7 @@ from notes.models import Collect
 
 
 class NoteAdmin(admin.ModelAdmin):
-    list_display=('id','created','title','type','desc','likes','cover','collects','images')
+    list_display=('note_id','created','title','type','desc','likes','cover','collects','images')
 
 class LikeAdmin(admin.ModelAdmin):
     list_display=('like_id','created','note_id','user_id')
