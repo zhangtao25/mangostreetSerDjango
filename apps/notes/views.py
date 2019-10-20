@@ -5,9 +5,11 @@ from notes.models import Collect
 from notes.serializers import NoteSerializer
 from notes.serializers import LikeSerializer
 from notes.serializers import CollectSerializer
+from users.views import AuthticationView
 
 
 class NoteViewSet(viewsets.ModelViewSet):
+    # authentication_classes = [AuthticationView]
     """
     这个视图集自动提供“列表”和“详细”操作。
     """
