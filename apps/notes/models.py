@@ -9,9 +9,9 @@ class Note(models.Model):
     type = models.CharField(choices=[('normal','normal'),('video','video')], default='normal', max_length=10)
     desc = models.TextField()
     likes = models.IntegerField(default=0)
-    cover = models.ImageField(upload_to='avatars/')
+    # cover = models.ImageField(upload_to='avatars/')
     collects = models.IntegerField(default=0)
-    images = models.ImageField(max_length=500,upload_to='avatars/')
+    images = models.ImageField(max_length=500,upload_to='media/notes/images/')
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     class Meta:
         ordering = ['created']

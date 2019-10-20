@@ -30,7 +30,7 @@ class LikeViewSet(viewsets.ModelViewSet):
         like.save()
         print(like.note_id)
         like_list = Like.objects.filter(note_id=like.note_id)
-        note = Note.objects.get(id=like.note_id)
+        note = Note.objects.get(note_id=like.note_id)
         note.likes = len(like_list)
         note.save()
 

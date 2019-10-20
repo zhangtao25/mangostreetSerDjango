@@ -8,10 +8,6 @@ class NoteSerializer(serializers.ModelSerializer):
     user_id = serializers.CharField(source='user.user_id')
     class Meta:
         model = Note
-        # fields = [
-        #     'id', 'title', 'type',
-        #     'desc', 'likes', 'cover',
-        #     'collects','images','user_nickname','user_id']
         fields = "__all__"
 
 class LikeSerializer(serializers.ModelSerializer):
