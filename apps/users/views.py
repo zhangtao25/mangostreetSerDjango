@@ -13,7 +13,7 @@ import time
 class AuthticationView(BaseAuthentication):
     def authenticate(self, request):
         token = request.META.get("HTTP_AUTHORIZATION")
-        token_obj = User.objects.filter(token = token).first()
+        token_obj = User.objects.filter(token=token).first()
         if not token_obj:
             raise exceptions.AuthenticationFailed('用户认证失败')
         return (token_obj.user_account, token_obj)
@@ -21,19 +21,20 @@ class AuthticationView(BaseAuthentication):
     def authenticate_header(self, request):
         pass
 
+
 class AuthView(APIView):
-    def post(self, request,*args,**kwargs):
-        ret = {'code': 1000, 'msg':None}
+    def post(self, request, *args, **kwargs):
+        ret = {'code': 1000, 'msg': None}
         user_account = request._request.POST.get('user_account')
         user_password = request._request.POST.get('user_password')
-        print(user_password,user_account)
-        obj = User.objects.filter(user_account = user_account, user_password = user_password).first()
+        print(user_password, user_account)
+        obj = User.objects.filter(user_account=user_account, user_password=user_password).first()
         if not obj:
             ret['code'] = '1001'
             ret['msg'] = '用户名密码错误'
         token = str(time.time()) + user_account
-        User.objects.update_or_create(user_account = obj,defaults={'token': token})
-        ret['response'] = {'token':token}
+        User.objects.update_or_create(user_account=obj, defaults={'token': token})
+        ret['response'] = {'token': token}
         ret['result'] = True
         return JsonResponse(ret)
 
@@ -45,6 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class FollowViewSet(viewsets.ModelViewSet):
     # authentication_classes = [AuthticationView]
     """
@@ -52,5 +54,3 @@ class FollowViewSet(viewsets.ModelViewSet):
     """
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
-
-
