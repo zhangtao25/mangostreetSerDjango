@@ -19,6 +19,7 @@ class User(models.Model):
         ordering = ['created']
 
 
+
 class Follow(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     follow_id = models.UUIDField(primary_key=True, auto_created=True, default=uuid.uuid4, editable=False)
