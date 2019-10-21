@@ -8,6 +8,7 @@
 *.sln
 *.sw?
 
+media/
 upload/
 avatars/
 venv/
