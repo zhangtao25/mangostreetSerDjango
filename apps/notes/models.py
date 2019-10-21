@@ -3,6 +3,9 @@ from users.models import User
 import uuid
 
 
+
+
+
 class Note(models.Model):
     note_id = models.UUIDField(primary_key=True, auto_created=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -10,13 +13,19 @@ class Note(models.Model):
     type = models.CharField(choices=[('normal', 'normal'), ('video', 'video')], default='normal', max_length=10)
     desc = models.TextField()
     likes = models.IntegerField(default=0)
-    # cover = models.ImageField(upload_to='avatars/')
     collects = models.IntegerField(default=0)
-    images = models.ImageField(max_length=500, upload_to='media/notes/images/')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    images = models.CharField(max_length=1000,default='')
 
     class Meta:
         ordering = ['created']
+
+
+class Image(models.Model):
+    image_id = models.UUIDField(primary_key=True, auto_created=True, default=uuid.uuid4, editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    image = models.ImageField(max_length=500, upload_to='media/notes/images/')
 
 
 class Collect(models.Model):

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from notes.models import Note
 from notes.models import Like
 from notes.models import Collect
+from notes.models import Image
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -22,4 +23,10 @@ class LikeSerializer(serializers.ModelSerializer):
 class CollectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collect
+        fields = "__all__"
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
         fields = "__all__"
