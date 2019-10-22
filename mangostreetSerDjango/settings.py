@@ -29,6 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+#重载系统的用户，让UserProfile生效
+AUTH_USER_MODEL = 'users.UserProfile'
+
 
 # Application definition
 
@@ -45,7 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users.apps.UsersConfig',
-    'notes.apps.NotesConfig'
+    'user_operation.apps.UserOperationConfig'
 ]
 
 MIDDLEWARE = [
@@ -86,7 +89,7 @@ WSGI_APPLICATION = 'mangostreetSerDjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mangostreet',
+        'NAME': 'mangostreet1',
         'USER': 'root',
         'PASSWORD': 'wjyy26303',
         'HOST': '114.55.145.3',
